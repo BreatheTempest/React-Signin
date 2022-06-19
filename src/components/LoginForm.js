@@ -4,10 +4,13 @@ import facebookLogo from '../icons/icons8-facebook.svg';
 import googleLogo from '../icons/icons8-google.svg';
 import twitterLogo from '../icons/icons8-twitter.svg';
 
-export default function LoginForm({ login, error }) {
+export default function LoginForm({ login, error, signup }) {
 	const [details, setDetails] = useState({
+		username: '',
 		email: '',
 		password: '',
+		confirmPassword: '',
+		isChecked: false,
 	});
 
 	const [status, setStatus] = useState('Sign Up');
@@ -15,14 +18,16 @@ export default function LoginForm({ login, error }) {
 
 	const submitHandle = (e) => {
 		e.preventDefault();
-		login(details);
+		if (isStatusSignUp) signup(details);
+		else login(details);
 	};
 
 	const changeForm = (e) => {
-		const { name, value } = e.target;
+		const { name, value, type, checked } = e.target;
+		console.log(checked);
 		setDetails((prevDetails) => ({
 			...prevDetails,
-			[name]: value,
+			[name]: type === 'checkbox' ? checked : value,
 		}));
 	};
 
@@ -43,6 +48,8 @@ export default function LoginForm({ login, error }) {
 						placeholder="Username"
 						onChange={changeForm}
 						value={details.username}
+						required
+						attribute="username"
 					/>
 				) : (
 					''
@@ -54,6 +61,8 @@ export default function LoginForm({ login, error }) {
 					onChange={changeForm}
 					value={details.email}
 					placeholder="Email"
+					required
+					attribute="on"
 				/>
 				<input
 					placeholder="Password"
@@ -62,6 +71,8 @@ export default function LoginForm({ login, error }) {
 					id="password"
 					onChange={changeForm}
 					value={details.password}
+					required
+					attribute="new-password"
 				/>
 				{isStatusSignUp ? (
 					<input
@@ -71,6 +82,8 @@ export default function LoginForm({ login, error }) {
 						placeholder="Confirm Password"
 						onChange={changeForm}
 						value={details.confirmPassword}
+						required
+						attribute="current-password"
 					/>
 				) : (
 					''
@@ -79,15 +92,16 @@ export default function LoginForm({ login, error }) {
 					<div className="terms">
 						<input
 							type="checkbox"
-							name="terms"
+							name="isChecked"
 							id="terms"
 							onChange={changeForm}
 							value={details.confirmPassword}
+							checked={details.isChecked}
 						/>
-						<label htmlFor="terms">
+						<p>
 							By signing up you accept the <span>Term of service</span> and{' '}
 							<span> Privacy Policy</span>
-						</label>
+						</p>
 					</div>
 				) : (
 					''
@@ -101,7 +115,7 @@ export default function LoginForm({ login, error }) {
 							onChange={changeForm}
 							value={details.confirmPassword}
 						/>
-						<label htmlFor="terms">Remember me</label>
+						<label htmlFor="remember-me">Remember me</label>
 						<span>Forgot Password?</span>
 					</div>
 				) : (

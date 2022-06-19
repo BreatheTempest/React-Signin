@@ -148,3 +148,8 @@ input::placeholder {
 	cursor: pointer;
 	width: 30px;
 }
+
+.error {
+	color: #a0a0a0;
+	font-size: 0.8em;
+}
